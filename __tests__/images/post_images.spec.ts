@@ -2,17 +2,16 @@ import request from "supertest";
 import path from "path";
 import { BASE_URL, X_API_KEY, TIMEOUT, FILENAME } from "../../helper/constants";
 import { randomString } from "../../helper/common.helper";
-
-const api = request.agent(BASE_URL);
+import { deleteData } from "../../helper/api.helper";
 
 // Get file path of image file
-const filePath = path.join(path.dirname(path.dirname(__dirname)), 'files/dog.jpg');
+const filePath = path.join(path.dirname(path.dirname(__dirname)), `files/${FILENAME}`);
 
 let imageIds: string[] = [];
 
 describe("'POST' - /images/upload - Post image", () => {
   it("TDA_06 Verify that the user can upload an image with a valid file path", async () => {
-    const response = await api
+    const response = await request(BASE_URL)
       .post("/v1/images/upload")
       .set({
         "x-api-key": X_API_KEY,
@@ -39,8 +38,8 @@ describe("'POST' - /images/upload - Post image", () => {
   }, TIMEOUT);
 
   it("TDA_07 Verify that the user can upload an image with a valid file and sub_id", async () => {
-    const imageSubId = randomString(5)
-    const response = await api
+    const imageSubId = randomString
+    const response = await request(BASE_URL)
       .post("/v1/images/upload")
       .set({
         "x-api-key": X_API_KEY,
@@ -60,10 +59,7 @@ describe("'POST' - /images/upload - Post image", () => {
   }, TIMEOUT);
 
   // Delete test images
-  afterEach(async () => {
-    for (const imageId of imageIds) {
-      await api.delete(`/v1/images/${imageId}`).set({ "x-api-key": X_API_KEY });
-    };
-    imageIds = [];
+  afterAll(async () => {
+    await deleteData(imageIds)
   });
 });

@@ -22,3 +22,5 @@ Before you continue, ensure you meet the following requirement:
 ### **Running Tests**
 - To run the tests, run the following command:
 `npm test` 
+- To run test with the specific environment:
+`npm run test:qa` 
