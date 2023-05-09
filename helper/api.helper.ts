@@ -19,8 +19,8 @@ export const uploadImage = async () => {
       .attach("file", FILE_PATH);
 };
 
-export const createFavourite = async (imageId: string) => {
-    const favouriteSubId = randomString;
+export const createFavourite = async (imageId: string, optionalFavouriteSubId ?: string) => {
+    const favouriteSubId = optionalFavouriteSubId ? optionalFavouriteSubId : randomString;
     const response = request(BASE_URL)
       .post("/v1/favourites")
       .set({

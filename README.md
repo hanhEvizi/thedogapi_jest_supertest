@@ -11,7 +11,7 @@ Before you continue, ensure you meet the following requirement:
 - Jest: `v29.5.0`
 - Supertest: `v6.3.3`
 - Path: `v0.12.7`
-- Dotenv: `v16.0.3`
+- Dotenv-cli: `v7.2.1`
 
 ### **Getting Started**
 - To get started with this project, first install the project dependencies:
@@ -22,5 +22,5 @@ Before you continue, ensure you meet the following requirement:
 ### **Running Tests**
 - To run the tests, run the following command:
 `npm test` 
-- To run test with the specific environment:
+- To run test with the specific environment (example: .env.qa)
 `npm run test:qa` 
