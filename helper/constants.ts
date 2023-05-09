@@ -1,4 +1,3 @@
-require("dotenv").config({ path: ".env.qa" });
 import path from "path";
 
 export const BASE_URL = "https://api.thedogapi.com";

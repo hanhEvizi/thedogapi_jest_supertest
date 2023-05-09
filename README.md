@@ -20,7 +20,7 @@ Before you continue, ensure you meet the following requirement:
 `X_API_KEY=your-api-key-here`
 
 ### **Running Tests**
-- To run the tests, run the following command:
-`npm test` 
 - To run test with the specific environment (example: .env.qa)
 `npm run test:qa` 
+- To run test with the specific file (example: get_favourites.spect.ts)
+`npm run test:qa get_favourites`

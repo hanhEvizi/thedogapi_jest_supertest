@@ -7,7 +7,7 @@ import { randomNumber, randomString } from "../../helper/common.helper";
 let favouriteIds: string[] = [];
 let imageIds: string[] = [];
 
-describe("'POST' - /favourites - Post favourite", () => {
+describe("'GET' - /favourites - Get favourites", () => {
   let imageId: string;
   let limit = randomNumber;
   const favouriteSubId = randomString;
@@ -45,7 +45,7 @@ describe("'POST' - /favourites - Post favourite", () => {
 
     // Get all sub_id at favourite list
     const favouriteSubIds = response.body.map((favourite: { sub_id: any }) => favourite.sub_id);  
-      
+
     // Check if all elements in the favouriteSubIds are equal to the favouriteSubId value
     const allSubIdsEqual = favouriteSubIds.every((sub_id: string) => sub_id === favouriteSubId);
     expect(allSubIdsEqual).toBeTruthy();
