@@ -1,11 +1,7 @@
 import request from "supertest";
-import path from "path";
-import { BASE_URL, X_API_KEY, TIMEOUT, FILENAME } from "../../helper/constants";
+import { BASE_URL, X_API_KEY, TIMEOUT, FILENAME, FILE_PATH } from "../../helper/constants";
 import { randomString } from "../../helper/common.helper";
 import { deleteData } from "../../helper/api.helper";
-
-// Get file path of image file
-const filePath = path.join(path.dirname(path.dirname(__dirname)), `files/${FILENAME}`);
 
 let imageIds: string[] = [];
 
@@ -17,14 +13,14 @@ describe("'POST' - /images/upload - Post image", () => {
         "x-api-key": X_API_KEY,
         "Content-Type": "multipart/form-data",
       })
-      .attach("file", filePath);
+      .attach("file", FILE_PATH);
       
     const image = response.body;
 
+    expect(response.statusCode).toBe(201);
+
     // Store image id for delete later
     imageIds.push(image.id);
-
-    expect(response.statusCode).toBe(201);
 
     expect(image).toHaveProperty('id');
     expect(image).toHaveProperty('url');
@@ -46,20 +42,21 @@ describe("'POST' - /images/upload - Post image", () => {
         "Content-Type": "multipart/form-data",
       })
       .field('sub_id', imageSubId)
-      .attach("file", filePath);
+      .attach("file", FILE_PATH);
       
     const image = response.body;
+
+    expect(response.statusCode).toBe(201);
 
     // Store image id for delete later
     imageIds.push(image.id);
 
-    expect(response.statusCode).toBe(201);
-    expect(response.body.sub_id).toEqual(imageSubId);
+    expect(image.sub_id).toEqual(imageSubId);
     expect(image.original_filename).toEqual(FILENAME);
   }, TIMEOUT);
 
   // Delete test images
   afterAll(async () => {
-    await deleteData(imageIds)
+    await deleteData(imageIds, 'images');
   });
 });
