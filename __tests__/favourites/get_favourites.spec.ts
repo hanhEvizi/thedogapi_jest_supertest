@@ -9,7 +9,7 @@ let imageIds: string[] = [];
 
 describe("'GET' - /favourites - Get favourites", () => {
   let imageId: string;
-  let limit = randomNumber;
+  let limit = randomNumber(1,3);
   const favouriteSubId = randomString;
 
   beforeAll(async() => {
