@@ -15,7 +15,7 @@ describe("'POST' - /favourites - Post favourite", () => {
 
     // Store image id for delete later
     imageIds.push(imageId);
-  });
+  }, TIMEOUT);
 
   it("TDA_11 Verify that the user can create a favourite with a valid image_id", async () => {
     const response = await request(BASE_URL)
@@ -27,11 +27,12 @@ describe("'POST' - /favourites - Post favourite", () => {
       .send({
         image_id: imageId
       });
+    
+    expect(response.statusCode).toBe(201);
 
     // Store favourite id for delete later
     favouriteIds.push(response.body.id);
-    
-    expect(response.statusCode).toBe(201);
+
     expect(response.body).toHaveProperty('id');
     expect(response.body.message).toEqual(SUCCESS_MESSAGE);
   }, TIMEOUT);
@@ -40,6 +41,9 @@ describe("'POST' - /favourites - Post favourite", () => {
     // Create test favourite
     const favouriteResponse = await createFavourite(imageId);
     const favourite = await favouriteResponse.response;
+    
+    // Store favourite id for delete later
+    favouriteIds.push(favourite.body.id);
 
     const response = await request(BASE_URL)
       .post("/v1/favourites")
@@ -51,9 +55,6 @@ describe("'POST' - /favourites - Post favourite", () => {
         image_id: imageId,
         sub_id: favouriteResponse.favouriteSubId
       });
-
-    // Store favourite id for delete later
-    favouriteIds.push(favourite.body.id);
     
     expect(response.statusCode).toBe(400);
     expect(response.text).toEqual(DUPLICATE_FAVOURITE_MESSAGE);
@@ -63,5 +64,5 @@ describe("'POST' - /favourites - Post favourite", () => {
   afterAll(async () => {
     await deleteData(imageIds, 'images');
     await deleteData(favouriteIds, 'favourites');
-  });
+  }, TIMEOUT);
 });

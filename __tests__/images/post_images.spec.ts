@@ -17,10 +17,10 @@ describe("'POST' - /images/upload - Post image", () => {
       
     const image = response.body;
 
+    expect(response.statusCode).toBe(201);
+
     // Store image id for delete later
     imageIds.push(image.id);
-
-    expect(response.statusCode).toBe(201);
 
     expect(image).toHaveProperty('id');
     expect(image).toHaveProperty('url');
@@ -46,11 +46,12 @@ describe("'POST' - /images/upload - Post image", () => {
       
     const image = response.body;
 
+    expect(response.statusCode).toBe(201);
+
     // Store image id for delete later
     imageIds.push(image.id);
 
-    expect(response.statusCode).toBe(201);
-    expect(response.body.sub_id).toEqual(imageSubId);
+    expect(image.sub_id).toEqual(imageSubId);
     expect(image.original_filename).toEqual(FILENAME);
   }, TIMEOUT);
 
