@@ -1,34 +1,20 @@
 import request from "supertest";
 import { BASE_URL, X_API_KEY, TIMEOUT } from "../../helper/constants";
-import { createFavourite, deleteData } from "../../helper/api.helper";
-import { uploadImage } from "../../helper/api.helper";
+import { getUploadedImageIds, getCreatedFavouriteIds, deleteData } from "../../helper/api.helper";
 import { randomNumber, randomString } from "../../helper/common.helper";
 
 describe("'GET' - /favourites - Get favourites", () => {
   let favouriteIds: string[] = [];
   let imageIds: string[] = [];
-  let imageId: string;
-  let limit = randomNumber(1,3);
+  const limit = randomNumber(1,3);
   const favouriteSubId = randomString;
 
   beforeAll(async() => {
-    // Create test images
-    for (let i = 0; i < limit; i = i + 1) {
-        const image = await uploadImage();
-        imageId = image.body.id;
+    // Get ids of newly upload images for post step delete
+    imageIds = await getUploadedImageIds(limit);
 
-        // Store image id for post step delete
-        imageIds.push(imageId);
-    };
- 
-    // Create test favourites
-    for (imageId of imageIds) {
-        const favouriteResponse = await createFavourite(imageId, favouriteSubId);
-        const favourite = await favouriteResponse.response;
-        
-        // Store favourite id for post step delete
-        favouriteIds.push(favourite.body.id);
-    };
+    // Get ids of newly created favourites with input favouriteSubId
+    favouriteIds = await getCreatedFavouriteIds(limit, favouriteSubId);
   }, TIMEOUT);
 
   it("TDA_02 Verify that the user can get favourites list by existing sub_id", async () => {

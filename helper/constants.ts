@@ -2,7 +2,7 @@ import path from "path";
 
 export const BASE_URL = "https://api.thedogapi.com";
 export const X_API_KEY = process.env.X_API_KEY;
-export const TIMEOUT = 20000;
+export const TIMEOUT = 25000;
 export const FILENAME = "dog.jpg";
 
 // Get file path of image file
