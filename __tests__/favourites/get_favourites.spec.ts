@@ -4,10 +4,9 @@ import { createFavourite, deleteData } from "../../helper/api.helper";
 import { uploadImage } from "../../helper/api.helper";
 import { randomNumber, randomString } from "../../helper/common.helper";
 
-let favouriteIds: string[] = [];
-let imageIds: string[] = [];
-
 describe("'GET' - /favourites - Get favourites", () => {
+  let favouriteIds: string[] = [];
+  let imageIds: string[] = [];
   let imageId: string;
   let limit = randomNumber(1,3);
   const favouriteSubId = randomString;
@@ -18,7 +17,7 @@ describe("'GET' - /favourites - Get favourites", () => {
         const image = await uploadImage();
         imageId = image.body.id;
 
-        // Store image id for delete later
+        // Store image id for post step delete
         imageIds.push(imageId);
     };
  
@@ -27,7 +26,7 @@ describe("'GET' - /favourites - Get favourites", () => {
         const favouriteResponse = await createFavourite(imageId, favouriteSubId);
         const favourite = await favouriteResponse.response;
         
-        // Store favourite id for delete later
+        // Store favourite id for post step delete
         favouriteIds.push(favourite.body.id);
     };
   }, TIMEOUT);
@@ -41,12 +40,14 @@ describe("'GET' - /favourites - Get favourites", () => {
       });
     
     expect(response.statusCode).toBe(200);
+
+    // Check if the number of response.body elements with input favouriteSubId matches the number of newly created favourites with the same input
     expect(response.body.length).toBe(limit);
 
     // Get all sub_id at favourite list
-    const favouriteSubIds = response.body.map((favourite: { sub_id: any }) => favourite.sub_id);  
+    const favouriteSubIds = response.body.map((favourites: { sub_id: any }) => favourites.sub_id);  
 
-    // Check if all elements in the favouriteSubIds are equal to the favouriteSubId value
+    // Check if all elements in the favouriteSubIds are equal to the input favouriteSubId
     const allSubIdsEqual = favouriteSubIds.every((sub_id: string) => sub_id === favouriteSubId);
     expect(allSubIdsEqual).toBeTruthy();
   }, TIMEOUT);

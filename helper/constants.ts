@@ -7,5 +7,6 @@ export const FILENAME = "dog.jpg";
 
 // Get file path of image file
 export const FILE_PATH = path.join(path.dirname(__dirname), `files/${FILENAME}`);
+
 export const DUPLICATE_FAVOURITE_MESSAGE = "DUPLICATE_FAVOURITE - favourites are unique for account + image_id + sub_id";
 export const SUCCESS_MESSAGE = 'SUCCESS';

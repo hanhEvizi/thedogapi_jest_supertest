@@ -3,17 +3,17 @@ import { BASE_URL, X_API_KEY, TIMEOUT, DUPLICATE_FAVOURITE_MESSAGE, SUCCESS_MESS
 import { createFavourite, deleteData } from "../../helper/api.helper";
 import { uploadImage } from "../../helper/api.helper";
 
-let favouriteIds: string[] = [];
-let imageIds: string[] = [];
-
 describe("'POST' - /favourites - Post favourite", () => {
+  let favouriteIds: string[] = [];
+  let imageIds: string[] = [];
   let imageId: string;
+
   beforeEach(async() => {
-    // Upload an image before create an favourite
-    const image = await uploadImage()
+    // Upload an image before create a favourite
+    const image = await uploadImage();
     imageId = image.body.id;
 
-    // Store image id for delete later
+    // Store image id for for post step delete
     imageIds.push(imageId);
   }, TIMEOUT);
 
@@ -29,12 +29,11 @@ describe("'POST' - /favourites - Post favourite", () => {
       });
     
     expect(response.statusCode).toBe(201);
-
-    // Store favourite id for delete later
-    favouriteIds.push(response.body.id);
-
     expect(response.body).toHaveProperty('id');
     expect(response.body.message).toEqual(SUCCESS_MESSAGE);
+
+    // Store favourite id for for post step delete
+    favouriteIds.push(response.body.id);
   }, TIMEOUT);
 
   it("TDA_15 Verify that the user cannot create a favourite with an existing image_id and sub_id", async () => {
@@ -42,7 +41,7 @@ describe("'POST' - /favourites - Post favourite", () => {
     const favouriteResponse = await createFavourite(imageId);
     const favourite = await favouriteResponse.response;
     
-    // Store favourite id for delete later
+    // Store favourite id for for post step delete
     favouriteIds.push(favourite.body.id);
 
     const response = await request(BASE_URL)

@@ -3,9 +3,9 @@ import { BASE_URL, X_API_KEY, TIMEOUT, FILENAME, FILE_PATH } from "../../helper/
 import { randomString } from "../../helper/common.helper";
 import { deleteData } from "../../helper/api.helper";
 
-let imageIds: string[] = [];
-
 describe("'POST' - /images/upload - Post image", () => {
+  let imageIds: string[] = [];
+
   it("TDA_06 Verify that the user can upload an image with a valid file path", async () => {
     const response = await request(BASE_URL)
       .post("/v1/images/upload")
@@ -19,9 +19,6 @@ describe("'POST' - /images/upload - Post image", () => {
 
     expect(response.statusCode).toBe(201);
 
-    // Store image id for delete later
-    imageIds.push(image.id);
-
     expect(image).toHaveProperty('id');
     expect(image).toHaveProperty('url');
     expect(image).toHaveProperty('width');
@@ -31,10 +28,13 @@ describe("'POST' - /images/upload - Post image", () => {
     expect(image).toHaveProperty('approved');
 
     expect(image.original_filename).toEqual(FILENAME);
+
+    // Store image id for post step delete
+    imageIds.push(image.id);
   }, TIMEOUT);
 
   it("TDA_07 Verify that the user can upload an image with a valid file and sub_id", async () => {
-    const imageSubId = randomString
+    const imageSubId = randomString;
     const response = await request(BASE_URL)
       .post("/v1/images/upload")
       .set({
@@ -47,12 +47,11 @@ describe("'POST' - /images/upload - Post image", () => {
     const image = response.body;
 
     expect(response.statusCode).toBe(201);
-
-    // Store image id for delete later
-    imageIds.push(image.id);
-
     expect(image.sub_id).toEqual(imageSubId);
     expect(image.original_filename).toEqual(FILENAME);
+
+    // Store image id for post step delete
+    imageIds.push(image.id);
   }, TIMEOUT);
 
   // Delete test images
