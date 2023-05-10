@@ -16,8 +16,9 @@ Before you continue, ensure you meet the following requirement:
 ### **Getting Started**
 - To get started with this project, first install the project dependencies:
 `npm install`
-- Create a `.env.qa` file in the root directory of your project and add your API key:
-`X_API_KEY=your-api-key-here`
+- To use the API in the QA environment, add your API key to the .env.qa file in the root directory of your project:
+Ex: `X_API_KEY=your-api-key-here`
+This key will be used to authenticate requests to the API.
 
 ### **Running Tests**
 - To run test with the specific environment (example: .env.qa)
