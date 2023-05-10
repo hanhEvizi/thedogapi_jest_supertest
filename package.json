@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "test:qa": "dotenv -e .env.qa jest --coverage"
+    "test:qa": "dotenv -e .env.qa jest"
   },
   "author": "Hanh Ngo",
   "license": "ISC",
